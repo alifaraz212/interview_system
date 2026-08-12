@@ -118,6 +118,23 @@ class Database:
             self.conn.commit()
         return True  # Successfully deleted
     
+    def get_all_users_by_role(self, role):
+        """Fetch all users with a specific role"""
+        with self.conn.cursor(cursor_factory=RealDictCursor) as cur:
+            cur.execute("SELECT * FROM users WHERE role = %s", (role,))
+            return cur.fetchall()
+    
+    def add_interview(self, candidate_id, interviewer_id, status):
+        """Create a new interview"""
+        with self.conn.cursor(cursor_factory=RealDictCursor) as cur:
+            cur.execute(
+                "INSERT INTO interviews (candidate_id, interviewer_id, status) VALUES (%s, %s, %s) RETURNING id",
+                (candidate_id, interviewer_id, status)
+            )
+            result = cur.fetchone()
+            self.conn.commit()
+            return result['id']
+    
     def close(self):
         """Close the database connection"""
         if self.conn:
