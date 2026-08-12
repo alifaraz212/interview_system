@@ -7,11 +7,11 @@ import time
 class Database:
     def __init__(self):
         load_dotenv()
-        self.host = os.getenv("DB_HOST")
-        self.port = int(os.getenv("DB_PORT"))
-        self.database = os.getenv("DB_NAME")
-        self.user = os.getenv("DB_USER")
-        self.password = os.getenv("DB_PASSWORD")
+        self.host = os.getenv("DB_HOST") or "localhost"
+        self.port = int(os.getenv("DB_PORT") or 5433)
+        self.database = os.getenv("DB_NAME") or "interview_db"
+        self.user = os.getenv("DB_USER") or "interview_user"
+        self.password = os.getenv("DB_PASSWORD") or "interview_pass"
         self.conn = None
     
     def connect(self, retries=5):

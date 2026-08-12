@@ -9,6 +9,18 @@ services:
       - "5433:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
+  app:
+    build: .
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: interview_db
+      DB_USER: interview_user
+      DB_PASSWORD: interview_pass
+    stdin_open: true
+    tty: true
 
 volumes:
   db_data:
